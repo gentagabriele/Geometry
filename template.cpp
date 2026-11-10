@@ -57,6 +57,11 @@ Point2D<T> operator*(T k, const Point2D<T> &p) {
   return p * k;
 }
 
+template<typename T> 
+T dot(const Point2D<T> &p, const Point2D<T> &q) {
+  return p.x * q.x + p.y * q.y;
+}
+
 template<typename T>
 struct Point3D {
   T x, y, z;
@@ -121,4 +126,9 @@ struct Point3D {
 template<typename T>
 Point3D<T> operator*(T k, const Point3D<T> &p) {
   return p * k;
+}
+
+template<typename T> 
+T dot(const Point3D<T> &p, const Point3D<T> &q) {
+  return p.x * q.x + p.y * q.y + p.z * q.z;
 }
