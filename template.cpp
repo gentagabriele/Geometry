@@ -15,6 +15,13 @@ struct Point2D {
     this->y = p.y;
   }
 
+  bool operator==(const Point2D &p) const {
+    return this->x == p.x && this->y == p.y;
+  }
+  bool operator!=(const Point2D &p) const {
+    return this->x != p.x || this->y != p.y;
+  }
+
   Point2D operator+(const Point2D &p) const {
     return Point2D(this->x + p.x, this->y + p.y);
   }
@@ -45,7 +52,6 @@ struct Point2D {
     return *this;
   }
   Point2D& operator/=(T k) {
-    assert(k != 0);
     this->x /= k;
     this->y /= k;
     return *this;
@@ -73,15 +79,28 @@ double norm(const Point2D<T> &p) {
 }
 
 template<typename T>
+T dist2(const Point2D<T> &p, const Point2D<T> &q) {
+  return norm2(p - q); 
+}
+
+template<typename T>
+double dist(const Point2D<T> &p, const Point2D<T> &q) {
+  return norm(p - q);
+}
+
+template<typename T>
 double proj(const Point2D<T> &p, const Point2D<T> &q) {
-  double n = norm(q);
-  assert(n != 0);
-  return dot(p, q) / n;
+  return dot(p, q) / norm(q);
 }
 
 template<typename T>
 T cross(const Point2D<T> &p, const Point2D<T> &q) {
   return p.x * q.y - q.x * p.y;
+}
+
+template<typename T>
+double angle(const Point2D<T> &p, const Point2D<T> &q) {
+  return atan2(cross(p, q), dot(p, q));
 }
 
 template<typename T>
@@ -104,6 +123,13 @@ struct Point3D {
     this->z = p.z;
   }
 
+  bool operator==(const Point3D &p) const {
+    return this->x == p.x && this->y == p.y && this->z == p.z;
+  }
+  bool operator!=(const Point3D &p) const {
+    return this->x != p.x || this->y != p.y || this->z != p.z;
+  }
+
   Point3D operator+(const Point3D &p) const {
     return Point3D(this->x + p.x, this->y + p.y, this->z + p.z);
   }
@@ -114,7 +140,6 @@ struct Point3D {
     return Point3D(this->x * k, this->y * k, this->z * k);
   }
   Point3D operator/(T k) const {
-    assert(k != 0);
     return Point3D(this->x / k, this->y / k, this->z / k);
   }
 
@@ -137,7 +162,6 @@ struct Point3D {
     return *this;
   }
   Point3D& operator/=(T k) {
-    assert(k != 0);
     this->x /= k;
     this->y /= k;
     this->z /= k;
@@ -166,10 +190,18 @@ double norm(const Point3D<T> &p) {
 }
 
 template<typename T>
+T dist2(const Point3D<T> &p, const Point3D<T> &q) {
+  return norm2(p - q); 
+}
+
+template<typename T>
+double dist(const Point3D<T> &p, const Point3D<T> &q) {
+  return norm(p - q);
+}
+
+template<typename T>
 double proj(const Point3D<T> &p, const Point3D<T> &q) {
-  double n = norm(q);
-  assert(n != 0);
-  return dot(p, q) / n;
+  return dot(p, q) / norm(q);
 }
 
 template<typename T>
@@ -180,4 +212,9 @@ Point3D<T> cross(const Point3D<T> &p, const Point3D<T> &q) {
 template<typename T>
 T triple(const Point3D<T> &p, const Point3D<T> &q, const Point3D<T> &r) {
   return dot(p, cross(q, r));
+}
+
+template<typename T>
+double angle(const Point3D<T> &p, const Point3D<T> &q) {
+  return atan2(norm(cross(p, q)), dot(p, q));
 }
